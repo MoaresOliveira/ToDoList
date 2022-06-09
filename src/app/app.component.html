@@ -1,15 +1,15 @@
 <div class="container">
-  <app-form title="Task"></app-form>
-  <app-form title="Description" button="Add Task"></app-form>
+  <app-form title="Task" (onTyping)="taskToSave.name= $event.value"></app-form>
+  <app-form title="Description" (onTyping)="taskToSave.description= $event.value" button="Add Task" (onButtonClick)="addTask()"></app-form>
   <app-board title="To Do list">
-    <app-column title="To Do" >
-      <app-task *ngFor="let task of tasksToDo" [title]="task"></app-task>
+    <app-column style="width: 30%;" title="To Do" cdkDropList #toDoList="cdkDropList" [cdkDropListData]="tasksToDo" [cdkDropListConnectedTo]="[doingList,doneList]" (cdkDropListDropped)="onDrop($event)">
+      <app-task *ngFor="let task of tasksToDo" [title]="task.name" [description]="task.description" cdkDrag></app-task>
     </app-column>
-    <app-column title="Doing">
-      <app-task *ngFor="let task of tasksDoing" [title]="task"></app-task>
+    <app-column style="width: 30%;" title="Doing" cdkDropList #doingList="cdkDropList" [cdkDropListData]="tasksDoing" [cdkDropListConnectedTo]="[doneList,toDoList]" (cdkDropListDropped)="onDrop($event)">
+      <app-task *ngFor="let task of tasksDoing" [title]="task.name" [description]="task.description" cdkDrag></app-task>
     </app-column>
-    <app-column title="Done">
-      <app-task *ngFor="let task of tasksDone" [title]="task"></app-task>
+    <app-column style="width: 30%;" title="Done" cdkDropList #doneList="cdkDropList" [cdkDropListData]="tasksDone" [cdkDropListConnectedTo]="[doingList,toDoList]" (cdkDropListDropped)="onDrop($event)">
+      <app-task *ngFor="let task of tasksDone" [title]="task.name" [description]="task.description" cdkDrag></app-task>
     </app-column>
   </app-board>
 </div>

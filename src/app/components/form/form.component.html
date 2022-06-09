@@ -1,5 +1,5 @@
 <div class="my-3">
   <h4 for="input-primary" class="form-label">{{ title }}</h4>
-  <input type="text" id="input-primary" class="form-control my-1" />
-  <button *ngIf="button" class="btn btn-primary my-1">{{ button }}</button>
+  <input type="text" id="input-primary" (keyup)="setInputValue($event)" class="form-control my-1" />
+  <button *ngIf="button" (click)="click()" class="btn btn-primary my-1">{{ button }}</button>
 </div>

@@ -1,11 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-column',
-  templateUrl: './column.component.html',
-  styleUrls: ['./column.component.css']
+  templateUrl: './column.component.html'
 })
 export class ColumnComponent implements OnInit {
+
+ 
 
   @Input() title = 'Column'
 

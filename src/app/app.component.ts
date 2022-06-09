@@ -1,4 +1,6 @@
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component } from '@angular/core';
+import { Task } from './components/board/column/task/task.type';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +10,53 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'ToDoList';
 
-  tasksToDo: string[] = ['Task 1', 'Task 2', 'Task 3', ]
-  tasksDoing: string[] = ['Task 1', 'Task 2', 'Task 3', ]
-  tasksDone: string[] = ['Task 1', 'Task 2', 'Task 3', ]
+  tasksToDo: Task[] = [
+    {
+      name: 'task 1',
+      description: 'a'
+    },
+    {
+      name: 'task 2',
+      description: 'a'
+    },
+    {
+      name: 'task 3',
+      description: 'a'
+    }
+  ]
+  tasksDoing: Task[] = []
+  tasksDone: Task[] = []
+
+  taskToSave: Task = {
+    name: '',
+    description: ''
+  }
+
+
+  addTask(){
+    if(this.validate()){
+      let task = [this.taskToSave]
+      this.tasksToDo.concat(task)
+    }
+  }
+
+  onDrop(event: CdkDragDrop<Task[]>){
+    if(event.previousContainer === event.container){
+      moveItemInArray(event.container.data,event.previousIndex,event.currentIndex)
+      console.log(event.container.data)
+    }else{
+      transferArrayItem(event.previousContainer.data,event.container.data,event.previousIndex, event.currentIndex)
+      console.log(event.container.data)
+    }
+  }
+
+  validate() {
+    if(this.taskToSave.name.trim().length == 0){
+      return false;
+    }else if(this.taskToSave.description.trim().length == 0){
+      return false;
+    }else{
+      return true;
+    }
+  }
 }
