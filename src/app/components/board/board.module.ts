@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TaskComponent } from './column/task/task.component';
 import { BoardComponent } from './board.component';
 import { ColumnComponent } from './column/column.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 
@@ -13,12 +14,14 @@ import { ColumnComponent } from './column/column.component';
     ColumnComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    DragDropModule
   ],
   exports: [
     TaskComponent,
     BoardComponent,
-    ColumnComponent
+    ColumnComponent,
+    DragDropModule
   ]
 })
 export class BoardModule { }
