@@ -6,8 +6,6 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 })
 export class ColumnComponent implements OnInit {
 
- 
-
   @Input() title = 'Column'
 
   constructor() { }
