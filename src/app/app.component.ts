@@ -35,8 +35,7 @@ export class AppComponent {
 
   addTask(){
     if(this.validate()){
-      let task = [this.taskToSave]
-      this.tasksToDo.concat(task)
+      this.tasksToDo.push({...this.taskToSave})
     }
   }
 
