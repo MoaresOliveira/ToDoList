@@ -16,6 +16,7 @@ export class TaskComponent implements OnInit {
   @Input() id: number = 1;
   @Input() title: string = 'Task';
   @Input() description: string = 'Description';
+  @Input() bgColor: string = '';
   @Input() editable = true;
   @Output() onEdit = new EventEmitter();
   @Output() onDelete = new EventEmitter();
