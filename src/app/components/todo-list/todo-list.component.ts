@@ -17,7 +17,7 @@ export class TodoListComponent {
   title = 'ToDoList';
 
   columns:
-  {tasksToDo: Task[]; tasksDoing: Task[]; tasksDone: Task[]} = {
+  {tasksToDo: Task[]; tasksDoing: Task[]; tasksDone: Task[]} | any = {
     tasksToDo:  [
       {
         id: 1,
@@ -53,16 +53,16 @@ export class TodoListComponent {
     this.taskToSave.id++;
   }
 
-  editTask(task: Task) {
-    let index = this.columns['tasksToDo'].findIndex((item) => item.id == task.id);
+  editTask(task: Task, list: string) {
+    let index = (this.columns[list] as Task[]).findIndex((item) => item.id == task.id);
     if (index != -1) {
-      this.columns['tasksToDo'][index] = task;
+      this.columns[list][index] = task;
     }
-    console.log(this.columns['tasksToDo']);
+    console.log(list);
   }
 
-  deleteTask(taskDeleted: Task) {
-    this.columns['tasksToDo'] = this.columns['tasksToDo'].filter((task) => task.id != taskDeleted.id);
+  deleteTask(taskDeleted: Task, list: string) {
+    this.columns[list] = (this.columns[list] as Task[]).filter((task) => task.id != taskDeleted.id);
   }
 
   onDrop(event: CdkDragDrop<Task[]>) {
@@ -89,8 +89,8 @@ export class TodoListComponent {
       return false;
     } else if (this.taskToSave.description.trim().length == 0) {
       return false;
-    } else if (this.columns['tasksToDo'].some((task) => task.id == this.taskToSave.id)) {
-      while (this.columns['tasksToDo'].some((task) => task.id == this.taskToSave.id)) {
+    } else if ((this.columns['tasksToDo'] as Task[]).some((task) => task.id == this.taskToSave.id)) {
+      while ((this.columns['tasksToDo'] as Task[]).some((task) => task.id == this.taskToSave.id)) {
         this.taskToSave.id++;
       }
       return true;

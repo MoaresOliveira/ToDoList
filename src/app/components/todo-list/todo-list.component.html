@@ -3,13 +3,13 @@
   <app-form title="Description" (onTyping)="taskToSave.description= $event.value" button="Add Task" (onButtonClick)="addTask()"></app-form>
   <app-board title="To Do list">
     <app-column style="width: 30%;" title="To Do" cdkDropList #toDoList="cdkDropList" [cdkDropListData]="columns.tasksToDo" [cdkDropListConnectedTo]="[doingList,doneList]" (cdkDropListDropped)="onDrop($event)">
-      <app-task (onEdit)="editTask($event.task)" (onDelete)="deleteTask($event.task)" class="drag-item" bgColor="bg-warning" *ngFor="let task of columns.tasksToDo" [id]="task.id" [title]="task.name" [description]="task.description" cdkDrag></app-task>
+      <app-task (onEdit)="editTask($event.task, 'tasksToDo')" (onDelete)="deleteTask($event.task, 'tasksToDo')" class="drag-item" bgColor="bg-warning" *ngFor="let task of columns.tasksToDo" [id]="task.id" [title]="task.name" [description]="task.description" cdkDrag></app-task>
     </app-column>
     <app-column style="width: 30%;" title="Doing" cdkDropList #doingList="cdkDropList" [cdkDropListData]="columns.tasksDoing" [cdkDropListConnectedTo]="[doneList,toDoList]" (cdkDropListDropped)="onDrop($event)">
-      <app-task (onEdit)="editTask($event.task)" (onDelete)="deleteTask($event.task)" class="drag-item" bgColor="bg-primary" *ngFor="let task of columns.tasksDoing" [id]="task.id" [title]="task.name" [description]="task.description" cdkDrag></app-task>
+      <app-task (onEdit)="editTask($event.task, 'tasksDoing')" (onDelete)="deleteTask($event.task, 'tasksDoing')" class="drag-item" bgColor="bg-primary" *ngFor="let task of columns.tasksDoing" [id]="task.id" [title]="task.name" [description]="task.description" cdkDrag></app-task>
     </app-column>
     <app-column style="width: 30%;" title="Done" cdkDropList #doneList="cdkDropList" [cdkDropListData]="columns.tasksDone" [cdkDropListConnectedTo]="[doingList,toDoList]" (cdkDropListDropped)="onDrop($event)">
-      <app-task (onEdit)="editTask($event.task)" (onDelete)="deleteTask($event.task)" [editable]="false" class="drag-item" bgColor="bg-success" *ngFor="let task of columns.tasksDone" [id]="task.id" [title]="task.name" [description]="task.description" cdkDrag></app-task>
+      <app-task [editable]="false" class="drag-item" bgColor="bg-success" *ngFor="let task of columns.tasksDone" [id]="task.id" [title]="task.name" [description]="task.description" cdkDrag></app-task>
     </app-column>
   </app-board>
 </div>
