@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-column',
@@ -7,6 +7,8 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 export class ColumnComponent implements OnInit {
 
   @Input() title = 'Column'
+  @Input() editable: boolean = false;
+  @Output() onAdd = new EventEmitter();
 
   constructor() { }
 
@@ -14,6 +16,10 @@ export class ColumnComponent implements OnInit {
     if(this.title.trim().length == 0){
       this.title = 'Column'
     }
+  }
+
+  emitEvent(){
+    this.onAdd.emit({columnName: this.title})
   }
 
 }

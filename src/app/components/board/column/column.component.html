@@ -1,7 +1,17 @@
-<div class="mx-1 bg-light border rounded" style="min-width: 150px;">
-  <h2 class="px-3 py-2">{{ title }}</h2>
+<div class="mx-1 bg-light border rounded" style="min-width: 150px">
+  <h2 class="px-3 py-2 d-flex align-items-center justify-content-between">
+    {{ title }}
+    <i
+      style="font-size: 1.2rem; cursor: pointer"
+      title="Add"
+      *ngIf="editable"
+      class="fa fa-plus text-secondary"
+      aria-hidden="true"
+      (click)="emitEvent()"
+    ></i>
+  </h2>
   <ul class="list-group list-group-flush rounded-bottom">
-    <li class="list-group-item" >
+    <li class="list-group-item">
       <ng-content></ng-content>
     </li>
   </ul>

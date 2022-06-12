@@ -14,7 +14,9 @@ import { Task } from '../board/column/task/task.type';
   styleUrls: ['./todo-list.component.css'],
 })
 export class TodoListComponent {
-  title = 'ToDoList';
+
+  title: string = 'ToDoList';
+  adding: boolean = false;
 
   columns:
   {tasksToDo: Task[]; tasksDoing: Task[]; tasksDone: Task[]} | any = {
@@ -51,6 +53,7 @@ export class TodoListComponent {
       this.columns['tasksToDo'].push({ ...this.taskToSave });
     }
     this.taskToSave.id++;
+    this.adding = false;
   }
 
   editTask(task: Task, list: string) {
