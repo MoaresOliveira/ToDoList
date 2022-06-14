@@ -7,25 +7,25 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { Task } from './task.type';
 
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
 })
 export class TaskComponent implements OnInit {
-  @Input() id: number = 1;
-  @Input() title: string = 'Task';
-  @Input() description: string = 'Description';
+
+  @Input() task: Task = new Task();
   @Input() bgColor: string = '';
   @Input() editable = true;
-  @Output() onEdit = new EventEmitter();
-  @Output() onDelete = new EventEmitter();
+
+  @Output() onEdit = new EventEmitter<Task>();
+  @Output() onDelete = new EventEmitter<Task>();
 
   @ViewChild('inputTitle') inputTitle: ElementRef;
   @ViewChild('inputDescription') inputDescription: ElementRef;
 
   editing: boolean = false;
-  date: Date = new Date();
 
   constructor(inputTitleRef: ElementRef, inputDescriptionRef: ElementRef) {
     this.inputTitle = inputTitleRef;
@@ -33,8 +33,11 @@ export class TaskComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.title.trim().length == 0) {
-      this.title = 'Task';
+    if (this.task.name.trim().length == 0) {
+      this.task.name = 'Task';
+    }
+    if(this.task.dateCreation == undefined){
+      this.task.dateCreation = new Date()
     }
   }
 
@@ -45,15 +48,9 @@ export class TaskComponent implements OnInit {
 
   saveEdition() {
     this.editing = false;
-    this.title = this.inputTitle.nativeElement.value;
-    this.description = this.inputDescription.nativeElement.value;
-    this.onEdit.emit({
-      task: {
-        id: this.id,
-        name: this.title,
-        description: this.description,
-      },
-    });
+    this.task.name = this.inputTitle.nativeElement.value;
+    this.task.description = this.inputDescription.nativeElement.value;
+    this.onEdit.emit(this.task);
   }
 
   cancelEdition() {
@@ -61,19 +58,14 @@ export class TaskComponent implements OnInit {
   }
 
   deleteTask() {
-    this.onDelete.emit({
-      task: {
-        id: this.id,
-        name: this.title,
-        description: this.description,
-      },
-    });
+    this.onDelete.emit(this.task);
   }
 
   getDate() {
-    let day = this.formatNumber(this.date.getDate());
-    let month = this.formatNumber(this.date.getMonth() + 1);
-    let year = this.formatNumber(this.date.getFullYear());
+    let date = new Date(this.task.dateCreation);
+    let day = this.formatNumber(date.getDate());
+    let month = this.formatNumber(date.getMonth() + 1);
+    let year = this.formatNumber(date.getFullYear());
 
     return `${day}/${month}/${year}`;
   }

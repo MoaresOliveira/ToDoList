@@ -9,9 +9,9 @@
     </span>
   </div>
   <div [class]="bgColor" class="card-body bg-opacity-10">
-    <h5 *ngIf="!editing" class="card-title">{{ title }}</h5>
-    <input *ngIf="editing" type="text" class="card-title form-control" style="font-weight: 500; font-size: 1.2rem" [value]="title" #inputTitle>
-    <p *ngIf="!editing" class="card-text">{{ description }}</p>
-    <input *ngIf="editing" type="text" class="card-text form-control" [value]="description" #inputDescription>
+    <h5 *ngIf="!editing" class="card-title">{{ task.name }}</h5>
+    <input *ngIf="editing" type="text" class="card-title form-control" style="font-weight: 500; font-size: 1.2rem" [value]="task.name" #inputTitle>
+    <p *ngIf="!editing" class="card-text">{{ task.description }}</p>
+    <input *ngIf="editing" type="text" class="card-text form-control" [value]="task.description" #inputDescription>
   </div>
 </div>
