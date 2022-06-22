@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { response } from 'express';
 import { Observable } from 'rxjs';
-import { Task } from '../components/board/column/task/task.type';
+import { Task } from '../types/task.type';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +15,13 @@ export class TaskService {
 
   addTask(task: Task){
     let url = this.baseUrl + "/new"
+    console.log("JSON: "+ task.dateCreation.toJSON().replace("T"," ").split(".")[0])
     let taskForm = {
       name: task.name,
       description: task.description,
       dateCreation: task.dateCreation.toJSON().split("T")[0],
       status: task.status,
+      order: task.order
     }
     const httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -51,6 +54,9 @@ export class TaskService {
 
   deleteTask(id: number){
     let url = this.baseUrl + "/delete/" + id
-    this.http.delete(url)
+    const httpOptions = {
+      headers: new HttpHeaders({'Content-Type': 'application/json'})
+    }
+    this.http.delete(url,httpOptions).subscribe(response => console.log(response))
   }
 }

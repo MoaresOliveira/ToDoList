@@ -3,10 +3,10 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { response } from 'express';
 import { TaskService } from 'src/app/services/task.service';
-import { StatusTask, Task } from '../board/column/task/task.type';
+import { StatusTask, Task } from '../../types/task.type';
 
 @Component({
   selector: 'app-todo-list',
@@ -17,6 +17,7 @@ export class TodoListComponent implements OnInit{
 
   title: string = 'ToDoList';
   adding: boolean = false;
+  @Input() control = true;
   columns:
   {tasksToDo: Task[]; tasksDoing: Task[]; tasksDone: Task[]} | any = {
     tasksToDo:  [],
@@ -29,36 +30,38 @@ export class TodoListComponent implements OnInit{
   constructor(private taskService: TaskService){}
 
   ngOnInit(): void {
-    let tasks = this.taskService.listTasks();
-    tasks.subscribe((response) => {
-      this.columns.tasksToDo = response.filter(task => task.status == StatusTask.ToDo)
-      this.columns.tasksDoing = response.filter(task => task.status == StatusTask.Doing)
-      this.columns.tasksDone = response.filter(task => task.status == StatusTask.Done)
-    })
-
+    console.log("ngOnInit")
+    this.control = !this.control
+    this.fillBoard()
   }
 
-  // listTasks(){
-
-  // }
-
+  ngOnChanges(){
+    console.log("On Changes")
+  }
 
   addTask() {
     if (this.validate()) {
+      this.taskToSave.order = this.columns.tasksToDo.length? this.columns.tasksToDo.length - 1: 0;
+      this.taskToSave.order = 12
+      console.log(this.taskToSave.order);
       this.taskService.addTask(this.taskToSave);
     }
-    this.ngOnInit()
     this.adding = false;
+    setTimeout(() => this.fillBoard(),100)
   }
 
-  editTask(task: Task, list?: string) {
+  editTask(task: Task) {
     console.log(task.name)
     task.dateCreation = new Date();
     this.taskService.updateTask(task)
   }
 
-  deleteTask(taskDeleted: Task, list: string) {
-    this.columns[list] = (this.columns[list] as Task[]).filter((task) => task.id != taskDeleted.id);
+  deleteTask(taskDeleted: Task) {
+    let id = (taskDeleted.id as number)
+    console.log("Deletada: " + taskDeleted.name)
+    console.log("Deletada: " + taskDeleted.id)
+    this.taskService.deleteTask(id);
+    setTimeout(() => this.fillBoard(),100)
   }
 
   onDrop(event: CdkDragDrop<Task[]>) {
@@ -68,7 +71,8 @@ export class TodoListComponent implements OnInit{
         event.previousIndex,
         event.currentIndex
       );
-      console.log(event.container.data);
+      console.log("Previous Index " + event.previousIndex);
+      console.log("Current Index " + event.currentIndex);
     } else {
       transferArrayItem(
         event.previousContainer.data,
@@ -76,11 +80,8 @@ export class TodoListComponent implements OnInit{
         event.previousIndex,
         event.currentIndex
       );
-      console.log(event.container.data[event.currentIndex]);
-      console.log(event.container.element.nativeElement.title);
       let task: Task = event.container.data[event.currentIndex]
       let statusString = event.container.element.nativeElement.title.replace(" ", "");
-      console.log(statusString)
       task.status = StatusTask[statusString as keyof typeof StatusTask];
       this.editTask(task)
     }
@@ -95,4 +96,21 @@ export class TodoListComponent implements OnInit{
       return true;
     }
   }
+
+  fillBoard(){
+      this.taskService.listTasks().subscribe((response) => {
+        console.log(response)
+        this.listTasks(response)
+      })
+  }
+
+  listTasks(tasks: Task[]){
+    if(tasks != undefined){
+      this.columns.tasksToDo = [...tasks.filter(task => task.status == StatusTask.ToDo)]
+      this.columns.tasksDoing = [...tasks.filter(task => task.status == StatusTask.Doing)];
+      this.columns.tasksDone = [...tasks.filter(task => task.status == StatusTask.Done)];
+    }
+  }
+
+
 }

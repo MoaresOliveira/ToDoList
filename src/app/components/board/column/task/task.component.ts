@@ -7,7 +7,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { Task } from './task.type';
+import { Task } from '../../../../types/task.type';
 
 @Component({
   selector: 'app-task',
@@ -30,6 +30,7 @@ export class TaskComponent implements OnInit {
   constructor(inputTitleRef: ElementRef, inputDescriptionRef: ElementRef) {
     this.inputTitle = inputTitleRef;
     this.inputDescription = inputDescriptionRef;
+    console.log("Construtor: "+ this.getDate())
   }
 
   ngOnInit(): void {
@@ -37,7 +38,7 @@ export class TaskComponent implements OnInit {
       this.task.name = 'Task';
     }
     if(this.task.dateCreation == undefined){
-      this.task.dateCreation = new Date()
+      this.task.dateCreation = new Date(Date.now())
     }
   }
 
@@ -62,7 +63,8 @@ export class TaskComponent implements OnInit {
   }
 
   getDate() {
-    let date = new Date(this.task.dateCreation);
+    let date = new Date(this.task.dateCreation as Date);
+    console.log(date)
     let day = this.formatNumber(date.getDate());
     let month = this.formatNumber(date.getMonth() + 1);
     let year = this.formatNumber(date.getFullYear());

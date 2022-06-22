@@ -1,6 +1,6 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component } from '@angular/core';
-import { Task } from './components/board/column/task/task.type';
+import { Task } from './types/task.type';
 
 @Component({
   selector: 'app-root',
@@ -8,5 +8,5 @@ import { Task } from './components/board/column/task/task.type';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
- 
+
 }
