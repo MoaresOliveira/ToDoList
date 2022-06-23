@@ -19,7 +19,7 @@ export class TaskService {
       description: task.description,
       dateCreation: task.dateCreation.toJSON().split('T')[0],
       status: task.status,
-      order: task.index,
+      index: task.index,
     };
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -43,9 +43,8 @@ export class TaskService {
     let taskForm = {
       name: task.name,
       description: task.description,
-      dateCreation: task.dateCreation.toJSON().split('T')[0],
       status: task.status,
-      order: task.index,
+      index: task.index,
     };
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
