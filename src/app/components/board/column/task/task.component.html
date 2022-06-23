@@ -1,4 +1,4 @@
-<div class="card" style="min-width: 100%;">
+<div class="card" style="min-width: 100%;" [id]="task.id">
   <div [class]="bgColor" class="card-header text-muted d-flex justify-content-between align-items-center bg-opacity-25">
     {{ getDate() }}
     <span *ngIf="editable" style="cursor: default;">

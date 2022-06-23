@@ -15,7 +15,6 @@ export class TaskService {
 
   addTask(task: Task){
     let url = this.baseUrl + "/new"
-    console.log("JSON: "+ task.dateCreation.toJSON().replace("T"," ").split(".")[0])
     let taskForm = {
       name: task.name,
       description: task.description,
@@ -31,7 +30,6 @@ export class TaskService {
 
   listTasks(): Observable<Task[]> {
     let url = this.baseUrl
-    let tasks: Task[] = [];
     const httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json'})
     }
@@ -57,6 +55,6 @@ export class TaskService {
     const httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json'})
     }
-    this.http.delete(url,httpOptions).subscribe(response => console.log(response))
+    return this.http.delete(url,httpOptions)
   }
 }

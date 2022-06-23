@@ -4,7 +4,6 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { response } from 'express';
 import { TaskService } from 'src/app/services/task.service';
 import { StatusTask, Task } from '../../types/task.type';
 
@@ -30,20 +29,14 @@ export class TodoListComponent implements OnInit{
   constructor(private taskService: TaskService){}
 
   ngOnInit(): void {
-    console.log("ngOnInit")
     this.control = !this.control
     this.fillBoard()
-  }
-
-  ngOnChanges(){
-    console.log("On Changes")
   }
 
   addTask() {
     if (this.validate()) {
       this.taskToSave.order = this.columns.tasksToDo.length? this.columns.tasksToDo.length - 1: 0;
       this.taskToSave.order = 12
-      console.log(this.taskToSave.order);
       this.taskService.addTask(this.taskToSave);
     }
     this.adding = false;
@@ -51,17 +44,17 @@ export class TodoListComponent implements OnInit{
   }
 
   editTask(task: Task) {
-    console.log(task.name)
     task.dateCreation = new Date();
     this.taskService.updateTask(task)
   }
 
   deleteTask(taskDeleted: Task) {
     let id = (taskDeleted.id as number)
-    console.log("Deletada: " + taskDeleted.name)
-    console.log("Deletada: " + taskDeleted.id)
-    this.taskService.deleteTask(id);
-    setTimeout(() => this.fillBoard(),100)
+    this.taskService.deleteTask(id).subscribe(response => {
+      setTimeout(() => {
+        this.fillBoard()
+      },100)
+    });
   }
 
   onDrop(event: CdkDragDrop<Task[]>) {
@@ -71,6 +64,7 @@ export class TodoListComponent implements OnInit{
         event.previousIndex,
         event.currentIndex
       );
+      console.log((event.item.element.nativeElement.attributes as any).id.value);
       console.log("Previous Index " + event.previousIndex);
       console.log("Current Index " + event.currentIndex);
     } else {
@@ -98,10 +92,10 @@ export class TodoListComponent implements OnInit{
   }
 
   fillBoard(){
-      this.taskService.listTasks().subscribe((response) => {
-        console.log(response)
-        this.listTasks(response)
+    this.taskService.listTasks().subscribe((response) => {
+          this.listTasks(response)
       })
+
   }
 
   listTasks(tasks: Task[]){
@@ -109,8 +103,11 @@ export class TodoListComponent implements OnInit{
       this.columns.tasksToDo = [...tasks.filter(task => task.status == StatusTask.ToDo)]
       this.columns.tasksDoing = [...tasks.filter(task => task.status == StatusTask.Doing)];
       this.columns.tasksDone = [...tasks.filter(task => task.status == StatusTask.Done)];
+    }else{
+      this.columns.tasksToDo = []
+      this.columns.tasksDoing = []
+      this.columns.tasksDone = []
     }
   }
-
 
 }

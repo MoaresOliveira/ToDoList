@@ -30,7 +30,6 @@ export class TaskComponent implements OnInit {
   constructor(inputTitleRef: ElementRef, inputDescriptionRef: ElementRef) {
     this.inputTitle = inputTitleRef;
     this.inputDescription = inputDescriptionRef;
-    console.log("Construtor: "+ this.getDate())
   }
 
   ngOnInit(): void {
@@ -44,7 +43,6 @@ export class TaskComponent implements OnInit {
 
   editTask() {
     this.editing = true;
-    console.log(this.inputTitle);
   }
 
   saveEdition() {
@@ -64,7 +62,6 @@ export class TaskComponent implements OnInit {
 
   getDate() {
     let date = new Date(this.task.dateCreation as Date);
-    console.log(date)
     let day = this.formatNumber(date.getDate());
     let month = this.formatNumber(date.getMonth() + 1);
     let year = this.formatNumber(date.getFullYear());
